@@ -5,6 +5,8 @@ import json
 import aiocoap
 import aiocoap.resource as resource
 
+import requests
+
 class TimeResource(resource.ObservableResource):
     
     def __init__(self):
@@ -33,6 +35,10 @@ class DataResource(resource.Resource):
 
         print(data)
 
+        response = requests.post("https://localhost:3000", json=data)
+
+        print(response)
+
 
         return aiocoap.Message(code=aiocoap.CREATED, payload=request.payload)
 
@@ -42,7 +48,9 @@ async def main():
     root.add_resource(['time'], TimeResource())
     root.add_resource(['data'], DataResource())
 
-    await aiocoap.Context.create_server_context(root, bind= ["localhost", 8000])
+    print(root)
+
+    await aiocoap.Context.create_server_context(root, bind= ("localhost", 8000), transports=['udp6'])
 
     await asyncio.get_running_loop().create_future()
 
