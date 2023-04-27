@@ -35,9 +35,9 @@ class DataResource(resource.Resource):
 
         print(data)
 
-        response = requests.post("https://localhost:3000", json=data)
+        #response = requests.post("https://localhost:3000/api/addRecord", json=data)
 
-        print(response)
+        #print(response)
 
 
         return aiocoap.Message(code=aiocoap.CREATED, payload=request.payload)
@@ -50,7 +50,7 @@ async def main():
 
     print(root)
 
-    await aiocoap.Context.create_server_context(root, bind= ("localhost", 8000), transports=['udp6'])
+    await aiocoap.Context.create_server_context(root, bind= ("localhost", 8000))
 
     await asyncio.get_running_loop().create_future()
 
